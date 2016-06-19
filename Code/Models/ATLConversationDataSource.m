@@ -122,7 +122,10 @@ NSInteger const ATLQueryControllerPaginationWindow = 30;
         }
         [weakSelf finishExpandingPaginationWindow];
     }];
-    BOOL success = [self.conversation synchronizeMoreMessages:numberOfMessagesToSynchronize error:&error];
+    BOOL success = NO;
+    if ([self.conversation respondsToSelector:@selector(synchronizeMoreMessages:error:)]) {
+        success = [self.conversation synchronizeMoreMessages:numberOfMessagesToSynchronize error:&error];
+    }
     if (!success) {
         if (observer) {
             [[NSNotificationCenter defaultCenter] removeObserver:observer];
